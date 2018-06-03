@@ -1,0 +1,32 @@
+<!doctype html>
+<html ng-app>
+
+<head>
+    <title>TODO</title>
+    <script src='/static/angular/js/angular.min.js'></script>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+    <script src='/static/js/short.url.js'></script>
+    <link rel='stylesheet' href='/static/css/style.css'>
+</head>
+
+<body>
+<div class='container' ng-controller='UrlCtrl'>
+    <h1 class='charcoal rounded-box'>ToDo</h1>
+
+    <h2>Tasks</h2>
+
+
+
+    <form>
+        <input type='text' class='rounded-box' placeholder='Your original URL here' ng-model='originalURL'>
+        <button class='grey rounded-box' ng-click='addURL()' >Shorten URL</button>
+    </form>
+    <ul class='grey rounded-box'>
+        <li ng-repeat='u in urls' ng-class='{done: u.Done}' ng-click='toggleDone(u)'>
+            <span class='checkbox'></span>{{u.Title}}
+        </li>
+    </ul>
+</div>
+</body>
+</html>
