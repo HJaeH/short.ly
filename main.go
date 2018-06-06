@@ -11,12 +11,13 @@ func main() {
 	log := logs.NewLogger()
 
 	log.SetLogger(logs.AdapterConsole)
-	beego.SetLevel(beego.LevelInformational)
 	//beego.SetLogger("file", `{"filename":"bin/shortly.log"}`)
+	//beego.BConfig.WebConfig.TemplateLeft = "[["
+	//beego.BConfig.WebConfig.TemplateRight = "]]"
 
 	beego.Router("/", &controllers.MainController{}, "get:Get")
 	beego.Router("/create", &controllers.MainController{}, "post:ShortURL")
-	beego.Router("/?:short", &controllers.MainController{}, "get:RedirectToOriginal")
+	beego.Router("/:short", &controllers.MainController{}, "get:RedirectToOriginal")
 
 	var initialShortURL uint8 = 3
 	go func() {

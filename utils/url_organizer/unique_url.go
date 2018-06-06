@@ -29,6 +29,8 @@ func GetUniqueURL(originalURL string) string {
 	if strArr[0] != "www" {
 		host = "www." + host
 	}
-	result := host + "?" + urlObject.RawQuery
-	return result
+	if urlObject.RawQuery != "" {
+		return host + "?" + urlObject.RawQuery
+	}
+	return host
 }

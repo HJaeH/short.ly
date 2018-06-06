@@ -13,13 +13,13 @@ var testcases = []struct {
 	{"youtube.com/watch?v=vjhmJaeI5ZI"},
 }
 
-const expected string = "www.youtube.com?v=vjhmJaeI5ZI"
+const expected1 string = "www.youtube.com?v=vjhmJaeI5ZI"
 
 func TestGetUniqueURL(t *testing.T) {
 	for _, tc := range testcases {
 		result := GetUniqueURL(tc.original)
-		if result != expected {
-			t.Errorf("Got %s as %s  expected %s", result, tc.original, expected)
+		if result != expected1 {
+			t.Errorf("Got %s as %s  expected %s", result, tc.original, expected1)
 		}
 
 	}

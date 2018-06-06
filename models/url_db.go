@@ -1,77 +1,53 @@
 package models
 
 import (
-	"encoding/json"
-	"fmt"
-
 	"github.com/short.ly/db/redis"
 	"github.com/short.ly/utils/base62"
 	"github.com/short.ly/utils/url_organizer"
 )
 
-const URL_KEY_PRE = "shorturl::url"
-const COUNTER_KEY = "shorturl::counter"
-
 func SetUrl(shortUrl string, originalUrl string) error {
 	db := redis.GetRedis()
-	_, err := db.Set(shortUrl, originalUrl, 0).Result()
+	//bi-direction
+	pipe := db.Pipeline()
+	pipe.Set(originalUrl, shortUrl, 0)
+	pipe.Set(shortUrl, originalUrl, 0)
+	_, err := pipe.Exec()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetUrl(url string) (*URL, error) {
-	key := createURLKey(url)
+func GetOriginalUrl(shortUrl string) (string, error) {
+	key := shortUrl
 	db := redis.GetRedis()
 
-	val, err := db.Get(key).Result()
-	var newURL = new(URL)
+	originalUrl, err := db.Get(key).Result()
 	if err != nil {
-		return &URL{}, err
+		return "", err
 	}
 
-	if err := json.Unmarshal([]byte(val), &newURL); err != nil {
-		return &URL{}, err
-	}
-
-	return newURL, nil
+	return originalUrl, nil
 }
 
-//func GetCount() (int64, error) {
-//
-//	cache := redis.GetRedis()
-//	var count = new(int64)
-//	res, err := cache.Get(COUNTER_KEY).Result()
-//	if err != nil {
-//		cache.Incr(COUNTER_KEY)
-//	}
-//	if err := json.Unmarshal([]byte(res), &count); err != nil {
-//		return 0, err
-//	}
-//
-//	return *count, nil
-//}
-
-func AddURL(url string) error {
-
+func AddURL(url string) (string, error) {
+	db := redis.GetRedis()
 	uniqueURL := url_organizer.GetUniqueURL(url)
-
-	index, err := redis.GetIndex()
-	if err != nil {
-		return err
-	}
-	shortURL := base62.EncodeBase62(int64(index))
-	fmt.Println("shorturl test", shortURL)
-	urlAlreadyExist, err := GetUrl(shortURL)
+	existShortUrl, err := db.Get(uniqueURL).Result()
+	var shortURL string
 	if err == redis.Nil {
-		SetUrl(shortURL, uniqueURL)
-	}
-	_ = urlAlreadyExist
-	return fmt.Errorf("unknown error")
-}
+		index, err := redis.GetIndex()
+		if err != nil {
+			return "", err
+		}
+		shortURL = base62.EncodeBase62(int64(index))
 
-/// internal functions
-func createURLKey(organizedURL string) string {
-	return URL_KEY_PRE + "::" + organizedURL
+		if err := SetUrl(shortURL, uniqueURL); err != nil {
+			return "", err
+		}
+		return shortURL, nil
+	}
+
+	return existShortUrl, nil
 }
