@@ -19,18 +19,13 @@
 
     <h2>shorten URL</h2>
 
-    <ul class='grey rounded-box'>
-        <li ng-repeat='t in tasks' ng-class='{done: t.Done}' ng-click='toggleDone(t)'>
-            <span class='checkbox'></span>{{t.Title}}
-        </li>
-    </ul>
     <form>
         <input type='text' class='rounded-box' placeholder='Your original URL here' ng-model='rawURL'>
         <button class='grey rounded-box' ng-click='addURL()' >Shorten URL</button>
     </form>
     <ul class='grey rounded-box' >
         <li ng-repeat='x in records' >
-            <span class='checkbox'></span>{{.x}}
+            <span class='checkbox'></span>
         </li>
     </ul>
 </div>

@@ -6,6 +6,8 @@ import (
 	"github.com/short.ly/utils/url_organizer"
 )
 
+var UrlList *UrlManager
+
 func SetUrl(shortUrl string, originalUrl string) error {
 	db := redis.GetRedis()
 	//bi-direction

@@ -1,8 +1,12 @@
 # Components
+Golang
 Beego
 angularJS
 Redis
 
+# dependencies
+Redis v3.2.8
+Go 1.8
 
 
 ## Installation

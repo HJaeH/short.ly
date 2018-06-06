@@ -52,6 +52,7 @@ func (o *MainController) ShortURL() {
 		OriginalURL: req.URL,
 		ShortURL:    shortURL,
 	}
+	models.UrlList.Save(&result)
 	byteResult, err := json.Marshal(result)
 	if err != nil {
 		o.Ctx.Output.SetStatus(400)
@@ -69,6 +70,9 @@ func (o *MainController) RedirectToOriginal() {
 	if err != nil {
 		o.Ctx.Output.SetStatus(404)
 	}
+
+	o.Data["json"] = models.UrlList
+	o.ServeJSON()
 
 	fmt.Println("short url : ", shortUrl, ", original url :", originalUrl)
 	o.Ctx.Output.Body([]byte(originalUrl))

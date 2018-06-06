@@ -18,6 +18,13 @@ function UrlCtrl($scope, $http, $location) {
           "Ernst Handel",
       ]
 
+   var refresh = function() {
+      return $http.get('/create/').
+        success(function(data) { $scope.localURLs = data; }).
+        error(logError);
+    };
+
+
   $scope.addURL = function() {
         // check url validation.
          if(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test($scope.rawURL)){
@@ -36,6 +43,9 @@ function UrlCtrl($scope, $http, $location) {
                 $scope.data = response.data;
                 $scope.localURLs.push($scope.data);
                 $scope.records.push($scope.data);
+                refresh().then(function() {
+
+                        })
 
              }, function(response) {
                 $scope.data = response.data || 'Request failed';
