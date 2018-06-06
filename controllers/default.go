@@ -1,13 +1,15 @@
 package controllers
 
 import (
-	"encoding/json"
-
 	"fmt"
 
 	"github.com/astaxie/beego"
-	"../models"
+	"github.com/short.ly/models"
 )
+
+type ShortUrlInput struct {
+	URL string `form:"url"`
+}
 
 type MainController struct {
 	beego.Controller
@@ -19,19 +21,38 @@ func (o *MainController) Get() {
 }
 
 func (o *MainController) ShortURL() {
-	req := struct{ RawURL string }{}
-	if err := json.Unmarshal(o.Ctx.Input.RequestBody, &req); err != nil {
+	beego.Debug("ShortURL")
+
+	req := ShortUrlInput{}
+	fmt.Println("ShortURL , url :", o.Input().Get("url"), o.Ctx.Input.Param(":url"))
+
+	if err := o.ParseForm(&req); err != nil {
 		o.Ctx.Output.SetStatus(400)
-		o.Ctx.Output.Body([]byte("empty title"))
+		o.Ctx.Output.Body([]byte("Internal Error"))
 		return
 	}
 
-	t, err := models.NewURL(req.RawURL)
-	if err != nil {
+	if req.URL == "" {
 		o.Ctx.Output.SetStatus(400)
-		o.Ctx.Output.Body([]byte(err.Error()))
+		o.Ctx.Output.Body([]byte("URL Empty "))
 		return
 	}
-	fmt.Println("--", req.RawURL)
-	models.DefaultURLMap.AddURL(t)
+
+	models.AddURL(req.URL)
+	o.Ctx.Output.Body([]byte("ok"))
+}
+
+func (o *MainController) RedirectToOriginal() {
+
+	fmt.Println("RedirectToOriginal")
+	req := ShortUrlInput{}
+
+	if err := o.ParseForm(&req); err != nil {
+		o.Ctx.Output.SetStatus(400)
+		o.Ctx.Output.Body([]byte("Internal Error"))
+		return
+	}
+	//models.GetUrl()
+
+	//o.Redirect()
 }

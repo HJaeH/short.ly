@@ -1,0 +1,6 @@
+logs/
+docs/
+bin/
+.idea/
+.exe
+*.iml

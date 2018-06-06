@@ -3,19 +3,24 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"github.com/my-beego-todo/controllers"
-	"./utils"
+	"github.com/short.ly/controllers"
+	"github.com/short.ly/db/redis"
 )
 
 func main() {
 	log := logs.NewLogger()
+
 	log.SetLogger(logs.AdapterConsole)
-	log.Debug("this is a debug message")
-	beego.Router("/", &controllers.MainController{})
-	beego.Router("/:id:int", &controllers.MainController{}, "get:Redirect")
-	beego.Router("/shorten", &controllers.MainController{}, "post:ShortURL")
+	beego.SetLevel(beego.LevelInformational)
+	//beego.SetLogger("file", `{"filename":"bin/shortly.log"}`)
+
+	beego.Router("/", &controllers.MainController{}, "get:Get")
+	beego.Router("/create", &controllers.MainController{}, "post:ShortURL")
+	beego.Router("/?:short", &controllers.MainController{}, "get:RedirectToOriginal")
+
+	var initialShortURL uint8 = 3
+	go func() {
+		redis.InitNumbers(initialShortURL)
+	}()
 	beego.Run()
-
-	utils.InitCounter()
-
 }

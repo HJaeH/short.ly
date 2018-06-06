@@ -1,16 +1,25 @@
-#
+# Components
+Beego
+angularJS
+Redis
 
-beego + angularJS
 
 
 ## Installation
 
 ```
-cd $GOPATH/src/short.ly/
+cd $GOPATH/src/short.ly
+go get -v
 go run main.go
 ```
+## Test
+````
+cd $GOPATH/src/short.ly
+go test ./...
+````
 
-## Usage
+## 
+
 
 ```
 http://127.0.0.1:8080
