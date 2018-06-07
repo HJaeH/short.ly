@@ -20,8 +20,7 @@ function UrlCtrl($scope, $http, $window) {
 
 
    $scope.redir = function(data){
-       console.log(data)
-//       $window.location.replace("http://www.google.com");
+       $window.location.replace(data);
      }
 
   $scope.addURL = function() {

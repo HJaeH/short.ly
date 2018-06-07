@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 
 	"strings"
 
@@ -69,15 +68,12 @@ func (o *MainController) ShortURL() {
 
 func (o *MainController) RedirectToOriginal() {
 
-	fmt.Println("RedirectToOriginal ")
 	shortUrl := strings.TrimPrefix(o.Ctx.Request.RequestURI, "/")
 	originalUrl, err := models.GetOriginalUrl(shortUrl)
 	if err != nil {
 		o.Ctx.Output.SetStatus(404)
 	}
 
-	fmt.Println("short url : ", shortUrl, ", original url :", originalUrl)
-
-
+	//fmt.Println("short url : ", shortUrl, ", original url :", originalUrl)
 	o.Redirect(originalUrl, 307)
 }

@@ -26,7 +26,8 @@
     <ul class='grey rounded-box'>
         <li ng-repeat='x in localURLs'>
             <!--<a href= {{x.ShortURL}} target="_blank">Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</a>-->
-            <button class=' rounded-box' ng-click="redir('x.OriginalURL')" >Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</button>
+            <button class=' rounded-box' ng-click="redir(x.ShortURL)" >Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</button>
+
         </li>
     </ul>
 </div>
