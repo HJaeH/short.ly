@@ -23,10 +23,10 @@
         <input type='text' class='rounded-box' placeholder='Your original URL here' ng-model='rawURL'>
         <button class='grey rounded-box' ng-click='addURL()' >Shorten URL</button>
     </form>
-    <ul class='grey rounded-box' >
-        <li ng-repeat='x in localURLs' >
-            <a href= {{x.ShortURL}} target="_blank">Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</a>
-            <!--<button class=' rounded-box' ng-click="redir({{x.OriginalURL}})" >Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</button>-->
+    <ul class='grey rounded-box'>
+        <li ng-repeat='x in localURLs'>
+            <!--<a href= {{x.ShortURL}} target="_blank">Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</a>-->
+            <button class=' rounded-box' ng-click="redir('x.OriginalURL')" >Original URL = {{x.OriginalURL}}, Short URL =  {{x.ShortURL}}</button>
         </li>
     </ul>
 </div>

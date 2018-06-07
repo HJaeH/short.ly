@@ -76,17 +76,8 @@ func (o *MainController) RedirectToOriginal() {
 		o.Ctx.Output.SetStatus(404)
 	}
 
-	o.Data["json"] = models.UrlList
-	o.ServeJSON()
-
-
 	fmt.Println("short url : ", shortUrl, ", original url :", originalUrl)
-	byteResult, err := json.Marshal(originalUrl)
-	if err != nil {
-		o.Ctx.Output.SetStatus(400)
-		o.Ctx.Output.Body([]byte("Internal Error"))
-		return
-	}
 
-	o.Ctx.Output.Body([]byte(byteResult))
+
+	o.Redirect(originalUrl, 307)
 }
