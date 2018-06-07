@@ -2,7 +2,7 @@
 
 
 
-function UrlCtrl($scope, $http, $location) {
+function UrlCtrl($scope, $http, $window) {
 
   $scope.urls = [];
   $scope.localURLs = [];
@@ -11,19 +11,18 @@ function UrlCtrl($scope, $http, $location) {
     console.log('code '+status+': '+data);
 
   };
-   $scope.records = [
-          "Alfreds Futterkiste",
-          "Berglunds snabbköp",
-          "Centro comercial Moctezuma",
-          "Ernst Handel",
-      ]
 
    var refresh = function() {
-      return $http.get('/create/').
-        success(function(data) { $scope.localURLs = data; }).
-        error(logError);
+//      return $http.get('/list').
+//        success(function(data) { $scope.localURLs = data; }).
+//        error(logError);
     };
 
+
+   $scope.redir = function(data){
+       console.log(data)
+//       $window.location.replace("http://www.google.com");
+     }
 
   $scope.addURL = function() {
         // check url validation.
@@ -41,11 +40,16 @@ function UrlCtrl($scope, $http, $location) {
              then(function(response) {
                 $scope.status = response.status;
                 $scope.data = response.data;
-                $scope.localURLs.push($scope.data);
-                $scope.records.push($scope.data);
-                refresh().then(function() {
-
-                        })
+                var found = false;
+                for(var i = 0; i < $scope.localURLs.length; i++) {
+                    if ($scope.localURLs[i].OriginalUrl == $scope.data.OriginalUrl) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found){
+                    $scope.localURLs.push($scope.data);
+                }
 
              }, function(response) {
                 $scope.data = response.data || 'Request failed';

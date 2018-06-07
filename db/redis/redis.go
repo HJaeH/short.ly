@@ -12,9 +12,9 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/go-redis/redis"
-	database "github.com/short.ly/db"
-	"github.com/short.ly/utils/base62"
-	"github.com/short.ly/utils/result_code"
+	database "github.com/HJaeH/short.ly/db"
+	"github.com/HJaeH/short.ly/utils/base62"
+	"github.com/HJaeH/short.ly/utils/result_code"
 )
 
 const Nil = redis.Nil

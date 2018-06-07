@@ -19,11 +19,13 @@ Go 1.8
 
 ## Installation & Execution
 ````
-
-$go get github.com/HJaeH/short.ly
-$cd $GOPATH/src/github.com/short.ly
-$go get -v
-$go run main.go
+$ export GOPATH=$HOME/go
+$ mkdir -p $GOPATH/src/github.com/HJaeH
+$ cd $GOPATH/src/github.com
+$ git clone https://github.com/HJaeH/short.ly.git
+$ cd HJaeH/short.ly
+$ go get -v
+$ go run main.go
 
 http://127.0.0.1:8080
 
@@ -70,9 +72,6 @@ $go test ./...
  하는 방식으로 해시 충돌에 대한 고민 없이, 중복 검사에 대한 리소스 없이
  
  빠르게 중복되지 않는 shorturl값을 생성 하도록 하였습니다.
- 
-   
- 
  
  
 ````

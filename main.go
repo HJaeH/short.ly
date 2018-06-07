@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"github.com/short.ly/controllers"
-	"github.com/short.ly/db/redis"
+	"github.com/HJaeH/short.ly/controllers"
+	"github.com/HJaeH/short.ly/db/redis"
 )
 
 func main() {
@@ -12,11 +12,9 @@ func main() {
 
 	log.SetLogger(logs.AdapterConsole)
 	//beego.SetLogger("file", `{"filename":"bin/shortly.log"}`)
-	//beego.BConfig.WebConfig.TemplateLeft = "[["
-	//beego.BConfig.WebConfig.TemplateRight = "]]"
-
-	beego.Router("/", &controllers.MainController{}, "get:Get")
 	beego.Router("/create", &controllers.MainController{}, "post:ShortURL")
+	beego.Router("/list", &controllers.MainController{}, "get:GetUrlList")
+	beego.Router("/", &controllers.MainController{}, "get:Get")
 	beego.Router("/:short", &controllers.MainController{}, "get:RedirectToOriginal")
 
 	var initialShortURL uint8 = 3

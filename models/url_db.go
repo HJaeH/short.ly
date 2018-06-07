@@ -1,9 +1,9 @@
 package models
 
 import (
-	"github.com/short.ly/db/redis"
-	"github.com/short.ly/utils/base62"
-	"github.com/short.ly/utils/url_organizer"
+	"github.com/HJaeH/short.ly/db/redis"
+	"github.com/HJaeH/short.ly/utils/base62"
+	"github.com/HJaeH/short.ly/utils/url_organizer"
 )
 
 var UrlList *UrlManager

@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 
 	"github.com/astaxie/beego"
-	"github.com/short.ly/models"
-	"github.com/short.ly/utils/result_code"
+	"github.com/HJaeH/short.ly/models"
+	"github.com/HJaeH/short.ly/utils/result_code"
 )
 
 type ShortUrlInput struct {
@@ -22,7 +22,12 @@ type MainController struct {
 
 func (o *MainController) Get() {
 	o.TplName = "index.html"
+
 	o.Render()
+}
+
+func (o *MainController) GetUrlList() {
+
 }
 
 func (o *MainController) ShortURL() {
@@ -52,7 +57,7 @@ func (o *MainController) ShortURL() {
 		OriginalURL: req.URL,
 		ShortURL:    shortURL,
 	}
-	models.UrlList.Save(&result)
+
 	byteResult, err := json.Marshal(result)
 	if err != nil {
 		o.Ctx.Output.SetStatus(400)
@@ -74,9 +79,14 @@ func (o *MainController) RedirectToOriginal() {
 	o.Data["json"] = models.UrlList
 	o.ServeJSON()
 
-	fmt.Println("short url : ", shortUrl, ", original url :", originalUrl)
-	o.Ctx.Output.Body([]byte(originalUrl))
-	//models.GetUrl()
 
-	//o.Redirect()
+	fmt.Println("short url : ", shortUrl, ", original url :", originalUrl)
+	byteResult, err := json.Marshal(originalUrl)
+	if err != nil {
+		o.Ctx.Output.SetStatus(400)
+		o.Ctx.Output.Body([]byte("Internal Error"))
+		return
+	}
+
+	o.Ctx.Output.Body([]byte(byteResult))
 }

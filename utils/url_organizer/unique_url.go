@@ -30,7 +30,7 @@ func GetUniqueURL(originalURL string) string {
 		host = "www." + host
 	}
 	if urlObject.RawQuery != "" {
-		return host + "?" + urlObject.RawQuery
+		return "https://"+ host + "?" + urlObject.RawQuery
 	}
-	return host
+	return "https://"+host
 }

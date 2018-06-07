@@ -13,7 +13,7 @@ var testcases = []struct {
 	{"youtube.com/watch?v=vjhmJaeI5ZI"},
 }
 
-const expected1 string = "www.youtube.com?v=vjhmJaeI5ZI"
+const expected1 string = "https://www.youtube.com?v=vjhmJaeI5ZI"
 
 func TestGetUniqueURL(t *testing.T) {
 	for _, tc := range testcases {
