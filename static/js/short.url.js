@@ -36,18 +36,25 @@ function UrlCtrl($scope, $http, $window) {
              }
 
              $http.post('/create', data, config).
+
              then(function(response) {
                 $scope.status = response.status;
                 $scope.data = response.data;
                 var found = false;
                 for(var i = 0; i < $scope.localURLs.length; i++) {
-                    if ($scope.localURLs[i].OriginalUrl == $scope.data.OriginalUrl) {
-                        found = true;
-                        break;
+                    if ($scope.localURLs[i].OriginalURL == $scope.data.OriginalURL ) {
+                        if ( $scope.localURLs[i].OriginalURL != undefined){
+                            found = true;
+                            break;
+                        }
+
                     }
                 }
                 if (!found){
-                    $scope.localURLs.push($scope.data);
+                    var temp = $scope.data;
+                    $scope.localURLs.push(temp);
+                } else {
+                    console.log($scope.data, "1111")
                 }
 
              }, function(response) {
