@@ -19,6 +19,9 @@ import (
 
 const Nil = redis.Nil
 
+const StartCharacterLength = 3
+
+
 func newRedisClient() (*redis.Client, error) {
 
 	client := redis.NewClient(&redis.Options{
@@ -52,26 +55,44 @@ func GetRedis() *redis.Client {
 	return redisClient
 }
 
-func InitNumbers(maxCharacterNumber uint8) error {
-	startCount := int(math.Pow(float64(base62.Base), 2))
-	exist, err := isExist(database.COUNT_KEY)
-	if err != nil {
-		return err
-	}
+func ExpendCount() error {
+	//exist, err := isExist(database.COUNT_KEY)
+	//if err != nil {
+	//	return err
+	//}
 
-	if exist {
-		return nil
-	}
-
-	maxCount := int(math.Pow(float64(base62.Base), float64(maxCharacterNumber)))
+	var startCount int
+	var newMaxCount int
 	db := GetRedis()
+	maxCountResult, err := db.Get(database.MAX_COUNT_KEY).Result()
+	var first bool = false
+	if err == redis.Nil {
+		first = true
+		startCount = int(math.Pow(float64(base62.Base), StartCharacterLength-1))
+		newMaxCount = int(math.Pow(float64(base62.Base), float64(StartCharacterLength)))
+	} else if err != nil {
+		return err
+	} else {
 
-	//todo: fan in out 적용
+		currentMaxCount, err := strconv.Atoi(maxCountResult)
+		if err != nil {
+			return err
+		}
+		startCount = currentMaxCount
+		newMaxCount = currentMaxCount + int(math.Pow(float64(base62.Base), float64(StartCharacterLength)))
+	}
+
+
 	pipe := db.Pipeline()
-	for i := startCount; i < maxCount; i++ {
+	for i := startCount; i < newMaxCount; i++ {
 		pipe.LPush(database.COUNT_KEY, i)
 
 	}
+	if first {
+		newMaxCount = newMaxCount - startCount
+	}
+
+	pipe.Set(database.MAX_COUNT_KEY, newMaxCount, 0).Result()
 	_, err = pipe.Exec()
 	if err != nil {
 		return err
@@ -88,10 +109,11 @@ func GetIndex() (uint, error) {
 	}
 
 	if indexCandidatesCount < 10000 {
-		IncrementCharacterLength()
+		ExpendCount()
 	}
 
 	var randomInt = rand.Intn(int(indexCandidatesCount))
+
 
 	randomIndex, err := db.LIndex(database.COUNT_KEY, int64(randomInt)).Result()
 	if err != nil {
@@ -112,11 +134,6 @@ func GetIndex() (uint, error) {
 	}
 
 	return uint(res), nil
-
-}
-
-func IncrementCharacterLength() {
-	//db := GetRedis()
 
 }
 

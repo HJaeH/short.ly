@@ -17,9 +17,8 @@ func main() {
 	beego.Router("/", &controllers.MainController{}, "get:Get")
 	beego.Router("/:short", &controllers.MainController{}, "get:RedirectToOriginal")
 
-	var initialShortURL uint8 = 3
 	go func() {
-		redis.InitNumbers(initialShortURL)
+		redis.ExpendCount()
 	}()
 	beego.Run()
 }
