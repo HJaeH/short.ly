@@ -44,7 +44,7 @@ $go test ./...
 ````
  주로  short URL 생성은 hash함수를 사용하는데,
  
- shortURL서비스는 hash 함수는 가지는 특성을 활용하기
+ shortURL서비스는 hash 함수가 가지는 특성을 활용하기에
  
  적합하지 않습니다.
  
